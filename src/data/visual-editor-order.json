@@ -25,8 +25,8 @@
     "compare-question-percent",
     "compare-question-better",
     "wrapup-heading",
-    "wrapup-insight",
-    "wrapup-next"
+    "wrapup-next",
+    "wrapup-insight"
   ],
   "rows": [
     {
@@ -304,8 +304,7 @@
       "type": "stack",
       "columns": [
         [
-          "wrapup-heading",
-          "wrapup-insight"
+          "wrapup-heading"
         ]
       ],
       "props": {
@@ -318,6 +317,18 @@
       "columns": [
         [
           "wrapup-next"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "editor-full-wrapup-insight",
+      "type": "stack",
+      "columns": [
+        [
+          "wrapup-insight"
         ]
       ],
       "props": {
