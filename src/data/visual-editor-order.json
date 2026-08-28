@@ -19,8 +19,8 @@
     "fifty-question-spinner",
     "compare-heading",
     "compare-setup",
-    "compare-visual",
     "compare-percent-line",
+    "compare-visual",
     "compare-insight",
     "compare-question-percent",
     "compare-question-better",
@@ -247,20 +247,15 @@
     },
     {
       "id": "layout-compare-visual",
-      "type": "split",
+      "type": "stack",
       "columns": [
         [
+          "compare-percent-line",
           "compare-visual"
-        ],
-        [
-          "compare-percent-line"
         ]
       ],
       "props": {
-        "ratio": "1:1",
-        "gap": "lg",
-        "reverse": false,
-        "align": "start"
+        "maxWidth": "xl"
       }
     },
     {
