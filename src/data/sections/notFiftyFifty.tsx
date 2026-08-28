@@ -40,7 +40,7 @@ const fmtPercent = (v: number) => `${v.toFixed(1)}%`;
 // ── Geometry ─────────────────────────────────────────────────────────────────
 
 const VIEW_W = 560;
-const VIEW_H = 430;
+const VIEW_H = 440;
 const WHEEL = { x: 150, y: 150, r: 92 };
 const TRACK = { x0: 60, x1: 500 };
 const TRACK_W = TRACK.x1 - TRACK.x0;
@@ -261,7 +261,7 @@ function PredictTheSplitFigure() {
                     {
                         gesture: "drag-horizontal",
                         label: "Drag the divider to split the bar",
-                        position: { x: "50%", y: "78%" },
+                        position: { x: "50%", y: "74%" },
                         dragPath: { type: "line", startOffset: { x: -34, y: 0 }, endOffset: { x: 34, y: 0 } },
                         color: GUESS,
                     },
@@ -349,7 +349,7 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
                             {
                                 gesture: "drag-horizontal",
                                 label: "Split the bar right down the middle, the fifty-fifty guess",
-                                position: { x: "50%", y: "78%" },
+                                position: { x: "50%", y: "74%" },
                                 dragPath: { type: "line", startOffset: { x: -34, y: 0 }, endOffset: { x: 34, y: 0 } },
                                 completionVar: "fiftyPrediction",
                                 completionValue: 50,

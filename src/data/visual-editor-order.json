@@ -1,4 +1,328 @@
 {
-  "version": 2,
-  "blockIds": []
+  "version": 3,
+  "blockIds": [
+    "intro-title",
+    "intro-hook",
+    "intro-promise",
+    "counting-heading",
+    "counting-setup",
+    "counting-visual",
+    "counting-rule",
+    "counting-insight",
+    "counting-question-percent",
+    "counting-question-equivalent",
+    "fifty-heading",
+    "fifty-setup",
+    "fifty-visual",
+    "fifty-insight",
+    "fifty-question-red",
+    "fifty-question-spinner",
+    "compare-heading",
+    "compare-setup",
+    "compare-visual",
+    "compare-percent-line",
+    "compare-insight",
+    "compare-question-percent",
+    "compare-question-better",
+    "wrapup-heading",
+    "wrapup-insight",
+    "wrapup-next"
+  ],
+  "rows": [
+    {
+      "id": "layout-intro-title",
+      "type": "stack",
+      "columns": [
+        [
+          "intro-title"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-intro-hook",
+      "type": "stack",
+      "columns": [
+        [
+          "intro-hook"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-intro-promise",
+      "type": "stack",
+      "columns": [
+        [
+          "intro-promise"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-counting-heading",
+      "type": "stack",
+      "columns": [
+        [
+          "counting-heading"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-counting-setup",
+      "type": "stack",
+      "columns": [
+        [
+          "counting-setup"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-counting-visual",
+      "type": "stack",
+      "columns": [
+        [
+          "counting-visual"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-counting-rule",
+      "type": "stack",
+      "columns": [
+        [
+          "counting-rule"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-counting-insight",
+      "type": "stack",
+      "columns": [
+        [
+          "counting-insight"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-counting-question-percent",
+      "type": "stack",
+      "columns": [
+        [
+          "counting-question-percent"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-counting-question-equivalent",
+      "type": "stack",
+      "columns": [
+        [
+          "counting-question-equivalent"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-fifty-heading",
+      "type": "stack",
+      "columns": [
+        [
+          "fifty-heading"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-fifty-setup",
+      "type": "stack",
+      "columns": [
+        [
+          "fifty-setup"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-fifty-visual",
+      "type": "stack",
+      "columns": [
+        [
+          "fifty-visual"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-fifty-insight",
+      "type": "stack",
+      "columns": [
+        [
+          "fifty-insight"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-fifty-question-red",
+      "type": "stack",
+      "columns": [
+        [
+          "fifty-question-red"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-fifty-question-spinner",
+      "type": "stack",
+      "columns": [
+        [
+          "fifty-question-spinner"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-compare-heading",
+      "type": "stack",
+      "columns": [
+        [
+          "compare-heading"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-compare-setup",
+      "type": "stack",
+      "columns": [
+        [
+          "compare-setup"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-compare-visual",
+      "type": "split",
+      "columns": [
+        [
+          "compare-visual"
+        ],
+        [
+          "compare-percent-line"
+        ]
+      ],
+      "props": {
+        "ratio": "1:1",
+        "gap": "lg",
+        "reverse": false,
+        "align": "start"
+      }
+    },
+    {
+      "id": "layout-compare-insight",
+      "type": "stack",
+      "columns": [
+        [
+          "compare-insight"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-compare-question-percent",
+      "type": "stack",
+      "columns": [
+        [
+          "compare-question-percent"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-compare-question-better",
+      "type": "stack",
+      "columns": [
+        [
+          "compare-question-better"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-wrapup-heading",
+      "type": "stack",
+      "columns": [
+        [
+          "wrapup-heading",
+          "wrapup-insight"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "layout-wrapup-next",
+      "type": "stack",
+      "columns": [
+        [
+          "wrapup-next"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    }
+  ]
 }
