@@ -20,6 +20,22 @@ export const probabilityWrapUpBlocks: ReactElement[] = [
         </Block>
     </StackLayout>,
 
+    <StackLayout key="layout-wrapup-real-example" maxWidth="xl">
+        <Block id="wrapup-real-example" padding="sm">
+            <EditableParagraph id="para-wrapup-real-example" blockId="wrapup-real-example">
+                Chain enough of these events together and the numbers turn strange. Picking a perfect March Madness bracket means calling 63 games in a row, which news reports put at{" "}
+                <InlineHyperlink
+                    id="link-wrapup-perfect-bracket"
+                    href="https://www.cbsnews.com/news/perfect-bracket-march-madness/"
+                    showHint={false}
+                >
+                    roughly 1 in 9.2 quintillion
+                </InlineHyperlink>
+                , and no one has ever managed it.
+            </EditableParagraph>
+        </Block>
+    </StackLayout>,
+
     <StackLayout key="layout-wrapup-next" maxWidth="xl">
         <Block id="wrapup-next" padding="sm">
             <EditableParagraph id="para-wrapup-next" blockId="wrapup-next">
