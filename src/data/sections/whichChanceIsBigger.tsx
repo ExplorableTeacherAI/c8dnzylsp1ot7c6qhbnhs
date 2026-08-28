@@ -342,48 +342,7 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
 
     <StackLayout key="layout-compare-question-better" maxWidth="xl">
         <Block id="compare-question-better" padding="md">
-            <EditableParagraph id="para-compare-question-better" blockId="compare-question-better">
-                Stall A shades 5 of its 10 slices and Stall B shades 3 of its 6. The stall worth queueing at is{" "}
-                <InlineFeedback
-                    varName="answer_compare_better"
-                    correctValue="They are equal"
-                    position="terminal"
-                    successMessage="— exactly, both wheels give half their slices away, so both markers land on 50%"
-                    failureMessage="— have another look"
-                    hint="Stall A has more prizes, but it also has more slices to share them between"
-                    visualizationHint={{
-                        blockId: "compare-visual",
-                        hintKey: "compare-equal-chance-hint",
-                        label: "Discover it yourself",
-                        resetVars: { wheelAPrizes: 3, wheelBPrizes: 2, compareHighlight: "" },
-                        steps: [
-                            {
-                                gesture: "click",
-                                label: "Shade Stall A until 5 of its 10 slices win",
-                                position: { x: "28%", y: "38%" },
-                                completionVar: "wheelAPrizes",
-                                completionValue: 5,
-                                completionTolerance: 0.4,
-                            },
-                            {
-                                gesture: "click",
-                                label: "Now shade Stall B until 3 of its 6 win — watch where the two markers land",
-                                position: { x: "72%", y: "38%" },
-                                completionVar: "wheelBPrizes",
-                                completionValue: 3,
-                                completionTolerance: 0.4,
-                            },
-                        ],
-                    }}
-                >
-                    <InlineClozeChoice
-                        varName="answer_compare_better"
-                        correctAnswer="They are equal"
-                        options={["Stall A", "Stall B", "They are equal"]}
-                        {...choicePropsFromDefinition(getVariableInfo("answer_compare_better"))}
-                    />
-                </InlineFeedback>.
-            </EditableParagraph>
+            <EditableParagraph id="para-compare-question-better" blockId="compare-question-better">Stall A shades 5 of its 10 slices and Stall B shades 3 of its 6. The stall worth queueing at is <InlineFeedback varName={"answer_compare_better"} correctValue={"They are equal"} caseSensitive={false} position={"terminal"} successMessage={"— exactly, both wheels give half their slices away, so both markers land on 50%"} failureMessage={"— have another look"} hint={"Stall A has more prizes, but it also has more slices to share them between"} reviewLabel={"Review this concept"} visualizationHint={{"blockId": "compare-visual", "hintKey": "compare-equal-chance-hint", "label": "Discover it yourself", "resetVars": {"wheelAPrizes": 3, "wheelBPrizes": 2, "compareHighlight": ""}, "steps": [{"gesture": "click", "label": "Shade Stall A until 5 of its 10 slices win", "position": {"x": "28%", "y": "38%"}, "completionVar": "wheelAPrizes", "completionValue": 5, "completionTolerance": 0.4}, {"gesture": "click", "label": "Now shade Stall B until 3 of its 6 win — watch where the two markers land", "position": {"x": "72%", "y": "38%"}, "completionVar": "wheelBPrizes", "completionValue": 3, "completionTolerance": 0.4}]}}><InlineClozeChoice varName={"answer_compare_better"} correctAnswer={"They are equal"} options={["Stall A", "Stall B", "They are equal"]} placeholder={"???"} color={"#F57C00"} bgColor={"rgba(59, 130, 246, 0.35)"} id={"choice-1787882996279-wdcbc"} /></InlineFeedback>.</EditableParagraph>
         </Block>
     </StackLayout>,
 ];
