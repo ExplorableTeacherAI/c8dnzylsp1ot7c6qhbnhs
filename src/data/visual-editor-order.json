@@ -24,8 +24,8 @@
     "compare-insight",
     "compare-question-percent",
     "compare-question-better",
-    "wrapup-insight",
     "wrapup-heading",
+    "wrapup-insight",
     "wrapup-next"
   ],
   "rows": [
@@ -301,20 +301,15 @@
     },
     {
       "id": "layout-wrapup-heading",
-      "type": "split",
+      "type": "stack",
       "columns": [
         [
+          "wrapup-heading",
           "wrapup-insight"
-        ],
-        [
-          "wrapup-heading"
         ]
       ],
       "props": {
-        "ratio": "1:1",
-        "gap": "lg",
-        "reverse": false,
-        "align": "start"
+        "maxWidth": "xl"
       }
     },
     {
