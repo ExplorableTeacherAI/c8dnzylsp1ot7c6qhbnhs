@@ -19,8 +19,8 @@
     "fifty-question-spinner",
     "compare-heading",
     "compare-setup",
-    "compare-percent-line",
     "compare-visual",
+    "compare-percent-line",
     "compare-insight",
     "compare-question-percent",
     "compare-question-better",
@@ -250,8 +250,8 @@
       "type": "stack",
       "columns": [
         [
-          "compare-percent-line",
-          "compare-visual"
+          "compare-visual",
+          "compare-percent-line"
         ]
       ],
       "props": {
