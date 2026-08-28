@@ -1,7 +1,7 @@
 import { type ReactElement } from "react";
 import { Block } from "@/components/templates";
 import { StackLayout } from "@/components/layouts";
-import { EditableH2, EditableParagraph } from "@/components/atoms";
+import { EditableH2, EditableParagraph, InlineHyperlink } from "@/components/atoms";
 
 export const probabilityWrapUpBlocks: ReactElement[] = [
     <StackLayout key="layout-wrapup-heading" maxWidth="xl">
@@ -23,7 +23,14 @@ export const probabilityWrapUpBlocks: ReactElement[] = [
     <StackLayout key="layout-wrapup-next" maxWidth="xl">
         <Block id="wrapup-next" padding="sm">
             <EditableParagraph id="para-wrapup-next" blockId="wrapup-next">
-                That one fraction is why a wheel with more slices is meaner than it looks, and why "either it happens or it doesn't" hardly ever means fifty-fifty. Next comes the interesting part: events that happen one after another, such as two spins in a row, where the counting grows and the chances shrink surprisingly fast.
+                That one fraction is why a wheel with more slices is meaner than it looks, and why "either it happens or it doesn't" hardly ever means fifty-fifty. Next comes the interesting part: events that happen one after another, such as two spins in a row, where the counting grows and the{" "}
+                <InlineHyperlink
+                    id="link-wrapup-two-events"
+                    href="https://www.mathsisfun.com/data/probability-events-independent.html"
+                >
+                    chances shrink surprisingly fast
+                </InlineHyperlink>
+                .
             </EditableParagraph>
         </Block>
     </StackLayout>,
