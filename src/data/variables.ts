@@ -82,8 +82,54 @@ export interface VariableDefinition {
  */
 export const variableDefinitions: Record<string, VariableDefinition> = {
     // ========================================
-    // ADD YOUR VARIABLES HERE
+    // SECTION — Counting Every Outcome (counter bag)
     // ========================================
+    bagRedCounters: {
+        defaultValue: 1,
+        type: 'number',
+        label: 'Red counters in the bag',
+        description: 'How many red (winning) counters the student has dropped into the bag',
+        min: 0,
+        max: 8,
+        step: 1,
+        color: '#E08A72',
+    },
+    bagBlueCounters: {
+        defaultValue: 3,
+        type: 'number',
+        label: 'Blue counters in the bag',
+        description: 'How many blue (losing) counters the student has dropped into the bag',
+        min: 0,
+        max: 16,
+        step: 1,
+        color: '#62CCF9',
+    },
+    countingHighlight: {
+        defaultValue: '',
+        type: 'linkedHighlight',
+        label: 'Counter bag highlight',
+        description: 'Active highlight for the counter bag figure (redCounters | allCounters)',
+        color: '#E08A72',
+        bgColor: 'rgba(224, 138, 114, 0.2)',
+    },
+    answer_counting_percent: {
+        defaultValue: '',
+        type: 'text',
+        label: 'Wheel chance as a percentage',
+        description: 'Student answer: 5 winning slices out of 20 written as a percentage',
+        placeholder: '???',
+        correctAnswer: ['25%', '25', '25 %', '0.25'],
+        color: '#8E90F5',
+    },
+    answer_counting_equivalent: {
+        defaultValue: '',
+        type: 'text',
+        label: 'Equivalent bag total',
+        description: 'Student answer: total counters needed so that 4 reds give the same chance as 1 in 4',
+        placeholder: '???',
+        correctAnswer: '16',
+        color: '#8E90F5',
+    },
 
     // Uncomment and modify these examples for your lesson:
 
