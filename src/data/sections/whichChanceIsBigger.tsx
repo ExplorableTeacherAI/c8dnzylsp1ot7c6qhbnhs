@@ -336,25 +336,7 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
 
     <StackLayout key="layout-compare-question-percent" maxWidth="xl">
         <Block id="compare-question-percent" padding="md">
-            <EditableParagraph id="para-compare-question-percent" blockId="compare-question-percent">
-                A third stall arrives with a wheel of 25 slices, 4 of them winners. On the same scale, that stall sits at{" "}
-                <InlineFeedback
-                    varName="answer_compare_percent"
-                    correctValue={["16%", "16", "16 %", "0.16"]}
-                    position="terminal"
-                    successMessage="— yes, 4 out of 25 is 16%, which lands well left of both of the other stalls"
-                    failureMessage="— not quite yet"
-                    hint="4 out of 25 is the same as 16 out of 100"
-                    reviewBlockId="compare-percent-line"
-                    reviewLabel="Look at the percentage line again"
-                >
-                    <InlineClozeInput
-                        varName="answer_compare_percent"
-                        correctAnswer={["16%", "16", "16 %", "0.16"]}
-                        {...clozePropsFromDefinition(getVariableInfo("answer_compare_percent"))}
-                    />
-                </InlineFeedback>.
-            </EditableParagraph>
+            <EditableParagraph id="para-compare-question-percent" blockId="compare-question-percent">A third stall arrives with a wheel of 25 slices, 4 of them winners. On the same scale, that stall sits at <InlineFeedback varName={"answer_compare_percent"} correctValue={["16%", "16", "16 %", "0.16"]} caseSensitive={false} position={"terminal"} successMessage={"— yes, 4 out of 25 is 16%, which lands well left of both of the other stalls"} failureMessage={"— not quite yet"} hint={"4 out of 25 is the same as 16 out of 100"} reviewBlockId={"compare-percent-line"} reviewLabel={"Look at the percentage line again"}><InlineClozeInput varName={"answer_compare_percent"} correctAnswer={"16% | 16 | 16 % | 0.16"} placeholder={"question"} color={"#8E90F5"} bgColor={"rgba(59, 130, 246, 0.35)"} caseSensitive={false} id={"cloze-1787882996277-40hkx"} /></InlineFeedback>.</EditableParagraph>
         </Block>
     </StackLayout>,
 

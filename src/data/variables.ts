@@ -122,6 +122,73 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         color: '#8E90F5',
     },
     // ========================================
+    // SECTION — Not Everything Is 50-50 (predict the split, then spin)
+    // ========================================
+    fiftyPrediction: {
+        defaultValue: 50,
+        type: 'number',
+        label: 'Predicted win share',
+        description: 'Where the student splits the bar between winning and losing, as a percentage',
+        unit: '%',
+        min: 0,
+        max: 100,
+        step: 1,
+        color: '#AC8BF9',
+    },
+    fiftySpins: {
+        defaultValue: 0,
+        type: 'number',
+        label: 'Spins completed',
+        description: 'How many times the ten-slice wheel has been spun',
+        min: 0,
+        max: 200,
+        step: 1,
+        color: '#62D0AD',
+    },
+    fiftyWins: {
+        defaultValue: 0,
+        type: 'number',
+        label: 'Wins so far',
+        description: 'How many of the completed spins landed on the single winning slice',
+        min: 0,
+        max: 200,
+        step: 1,
+        color: '#62D0AD',
+    },
+    fiftySpinning: {
+        defaultValue: false,
+        type: 'boolean',
+        label: 'Wheel spinning',
+        description: 'Whether the ten-slice wheel is spinning repeatedly',
+    },
+    fiftyHighlight: {
+        defaultValue: '',
+        type: 'linkedHighlight',
+        label: 'Fifty-fifty figure highlight',
+        description: 'Active highlight for the predict-the-split figure (prizeSlice | guessBar | realBar)',
+        color: '#62D0AD',
+        bgColor: 'rgba(98, 208, 173, 0.2)',
+    },
+    answer_fifty_red: {
+        defaultValue: '',
+        type: 'select',
+        label: 'Chance of drawing the single red counter',
+        description: 'Student answer: 1 red counter among 9 blue',
+        placeholder: '???',
+        options: ['50%', '10%', '1%'],
+        correctAnswer: '10%',
+        color: '#8E90F5',
+    },
+    answer_fifty_spinner: {
+        defaultValue: '',
+        type: 'text',
+        label: 'Chance on an eight-section spinner',
+        description: 'Student answer: 2 winning sections out of 8 written as a percentage',
+        placeholder: '???',
+        correctAnswer: ['25%', '25', '25 %', '0.25'],
+        color: '#8E90F5',
+    },
+    // ========================================
     // SECTION — Which Chance Is Bigger? (two stalls on one percentage line)
     // ========================================
     wheelAPrizes: {
