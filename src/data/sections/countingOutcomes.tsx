@@ -32,7 +32,7 @@ const fmtPercent = (v: number) => `${v.toFixed(1)}%`;
 // ── Geometry ─────────────────────────────────────────────────────────────────
 
 const VIEW_W = 560;
-const VIEW_H = 360;
+const VIEW_H = 400;
 const BAG = { x: 250, y: 104, w: 220, h: 180 };
 const COUNTER_R = 13;
 const COLS = 6;
@@ -109,10 +109,7 @@ function CounterBagDrawing() {
         else setVar("bagBlueCounters", clamp(blue - 1, 0, MAX_BLUE));
     };
 
-    const readout =
-        total === 0
-            ? "The bag is empty"
-            : `${red} red out of ${total} counters = ${fmtPercent(share * 100)}`;
+    const readout = total === 0 ? "The bag is empty" : `${red} red out of ${total} counters`;
 
     return (
         <svg
@@ -232,10 +229,25 @@ function CounterBagDrawing() {
                 <rect x={BAR.x} y={BAR.y} width={Math.max(0, barWidth)} height={BAR.h} rx={6} fill={RED} />
                 <line x1={BAR.x + BAR.w * 0.25} y1={BAR.y - 7} x2={BAR.x + BAR.w * 0.25} y2={BAR.y + BAR.h + 7}
                     stroke={INK_DARK} strokeWidth="2" strokeLinecap="round" />
-                <text x={360} y={340} textAnchor="middle" fontSize="13" fill={INK_DARK}
+                <text x={360} y={334} textAnchor="middle" fontSize="13" fill={INK_DARK}
                     style={{ fontVariantNumeric: "tabular-nums" }}>
                     {readout}
                 </text>
+                {total > 0 && (
+                    <g style={{ fontVariantNumeric: "tabular-nums" }}>
+                        <text x={330} y={362} textAnchor="middle" fontSize="16" fill={RED}>
+                            {red}
+                        </text>
+                        <line x1={310} y1={368} x2={350} y2={368} stroke={INK_DARK} strokeWidth="2"
+                            strokeLinecap="round" />
+                        <text x={330} y={390} textAnchor="middle" fontSize="16" fill={INK_DARK}>
+                            {total}
+                        </text>
+                        <text x={364} y={376} textAnchor="start" fontSize="15" fill={INK_DARK}>
+                            {`= ${fmtPercent(share * 100)}`}
+                        </text>
+                    </g>
+                )}
             </g>
 
             {/* The counter being dragged */}
@@ -257,7 +269,7 @@ function CounterBagFigure() {
                 setVar("bagBlueCounters", 3);
                 setVar("countingHighlight", "");
             }}
-            caption="Drag counters from the tray into the bag, and click a counter in the bag to take it back out. The bar shows the share of red, and the upright tick marks the target of 1 in 4."
+            caption="Drag counters from the tray into the bag, and click a counter in the bag to take it back out. The upright tick on the bar marks the target of 1 in 4, and the fraction and percentage underneath update with every counter."
         >
             <CounterBagDrawing />
             <InteractionHintSequence
