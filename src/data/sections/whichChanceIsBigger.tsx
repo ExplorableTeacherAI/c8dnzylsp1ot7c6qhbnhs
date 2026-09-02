@@ -9,9 +9,11 @@ import {
     InlineFeedback,
     InlineLinkedHighlight,
     InlineScrubbleNumber,
+    InlineTooltip,
+    InlineTrigger,
     InteractionHintSequence,
 } from "@/components/atoms";
-import { Figure } from "@/components/molecules";
+import { Figure, FormulaBlock } from "@/components/molecules";
 import { useVar, useSetVar } from "@/stores";
 import { clamp, useSpring } from "@/lib/motion";
 import {
@@ -19,12 +21,13 @@ import {
     numberPropsFromDefinition,
     clozePropsFromDefinition,
     choicePropsFromDefinition,
+    scrubVarsFromDefinitions,
 } from "../variables";
 
 // ── Domain model: two stalls, fixed wheels, variable prize slices ────────────
 
-const STALL_A = { slices: 10, color: "#62D0AD", varName: "wheelAPrizes", id: "wheelA", label: "Stall A" };
-const STALL_B = { slices: 6, color: "#AC8BF9", varName: "wheelBPrizes", id: "wheelB", label: "Stall B" };
+const STALL_A = { slices: 10, color: "#62D0AD", textColor: "#3FA98A", varName: "wheelAPrizes", id: "wheelA", label: "Stall A" };
+const STALL_B = { slices: 6, color: "#AC8BF9", textColor: "#8B6BE0", varName: "wheelBPrizes", id: "wheelB", label: "Stall B" };
 
 const INK = "#64748B";
 const INK_DARK = "#334155";
@@ -105,7 +108,7 @@ function StallWheel({
                 y={264}
                 textAnchor="middle"
                 fontSize="13"
-                fill={stall.color}
+                fill={stall.textColor}
                 style={{ fontVariantNumeric: "tabular-nums" }}
             >
                 {`${prizes} of ${stall.slices} = ${fmtPercent(share * 100)}`}
@@ -200,7 +203,7 @@ function StallMarker({ stall, rowY }: { stall: typeof STALL_A; rowY: number }) {
                 }}
                 onPointerUp={() => setDragging(false)}
             />
-            <text x={labelX} y={rowY - 24} textAnchor="middle" fontSize="13" fill={stall.color}
+            <text x={labelX} y={rowY - 24} textAnchor="middle" fontSize="13" fill={stall.textColor}
                 style={{ fontVariantNumeric: "tabular-nums" }}>
                 {`${stall.label} ${fmtPercent(percent)}`}
             </text>
@@ -306,10 +309,37 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
         </Block>
     </SplitLayout>,
 
+    <StackLayout key="layout-compare-formula" maxWidth="xl">
+        <Block id="compare-formula" padding="lg">
+            <FormulaBlock
+                latex="\text{Stall } \highlight{wheelA}{A} = \frac{\scrub{wheelAPrizes}}{10} \qquad \text{Stall } \highlight{wheelB}{B} = \frac{\scrub{wheelBPrizes}}{6}"
+                variables={scrubVarsFromDefinitions(["wheelAPrizes", "wheelBPrizes"])}
+                linkedHighlights={{
+                    wheelA: {
+                        varName: "compareHighlight",
+                        color: "#3FA98A",
+                        bgColor: "rgba(98, 208, 173, 0.2)",
+                    },
+                    wheelB: {
+                        varName: "compareHighlight",
+                        color: "#8B6BE0",
+                        bgColor: "rgba(172, 139, 249, 0.2)",
+                    },
+                }}
+            />
+        </Block>
+    </StackLayout>,
+
     <StackLayout key="layout-compare-insight" maxWidth="xl">
         <Block id="compare-insight" padding="sm">
             <EditableParagraph id="para-compare-insight" blockId="compare-insight">
-                Percentages put both stalls on one scale, so the better bet is simply whichever marker sits further right.{" "}
+                <InlineTooltip
+                    id="tooltip-compare-percentage"
+                    tooltip="A percentage is a chance out of 100, so 30% means about 30 wins in every 100 spins."
+                >
+                    Percentages
+                </InlineTooltip>
+                {" "}put both stalls on one scale, so the better bet is simply whichever marker sits further right.{" "}
                 <InlineLinkedHighlight
                     id="link-compare-stall-a"
                     varName="compareHighlight"
@@ -329,20 +359,51 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
                 >
                     Stall B
                 </InlineLinkedHighlight>
-                {" "}and still win that race, because what you compare is the share of the slices, not the number of prizes.
+                {" "}and still win that race, because you compare the share of the slices, not the number of prizes. Stall A alone runs from{" "}
+                <InlineTrigger
+                    id="trigger-compare-impossible"
+                    varName="wheelAPrizes"
+                    value={0}
+                    color="#3FA98A"
+                    bgColor="rgba(98, 208, 173, 0.18)"
+                >
+                    impossible
+                </InlineTrigger>
+                {" "}at 0% to{" "}
+                <InlineTrigger
+                    id="trigger-compare-certain"
+                    varName="wheelAPrizes"
+                    value={10}
+                    color="#3FA98A"
+                    bgColor="rgba(98, 208, 173, 0.18)"
+                >
+                    certain
+                </InlineTrigger>
+                {" "}at 100%, with every real chance in between.
             </EditableParagraph>
         </Block>
     </StackLayout>,
 
     <StackLayout key="layout-compare-question-percent" maxWidth="xl">
         <Block id="compare-question-percent" padding="md">
-            <EditableParagraph id="para-compare-question-percent" blockId="compare-question-percent">A third stall arrives with a wheel of 25 slices, 4 of them winners. On the same scale, that stall sits at <InlineFeedback varName={"answer_compare_percent"} correctValue={["16%", "16", "16 %", "0.16"]} caseSensitive={false} position={"terminal"} successMessage={"— yes, 4 out of 25 is 16%, which lands well left of both of the other stalls"} failureMessage={"— not quite yet"} hint={"4 out of 25 is the same as 16 out of 100"} reviewBlockId={"compare-percent-line"} reviewLabel={"Look at the percentage line again"}><InlineClozeInput varName={"answer_compare_percent"} correctAnswer={"16% | 16 | 16 % | 0.16"} placeholder={"question"} color={"#8E90F5"} bgColor={"rgba(59, 130, 246, 0.35)"} caseSensitive={false} id={"cloze-1787882996277-40hkx"} /></InlineFeedback>.</EditableParagraph>
+            <EditableParagraph id="para-compare-question-percent" blockId="compare-question-percent">A third stall arrives with a wheel of 25 slices, 4 of them winners. On the same scale, that stall sits at <InlineFeedback varName={"answer_compare_percent"} correctValue={["16%", "16", "16 %", "0.16"]} caseSensitive={false} position={"terminal"} successMessage={"— yes, 4 out of 25 is 16%, which lands well left of both of the other stalls"} failureMessage={"— not quite yet"} hint={"4 out of 25 is the same as 16 out of 100"} reviewBlockId={"compare-percent-line"} reviewLabel={"Look at the percentage line again"}><InlineClozeInput
+                    varName="answer_compare_percent"
+                    correctAnswer={["16%", "16", "16 %", "0.16"]}
+                    id="cloze-compare-percent"
+                    {...clozePropsFromDefinition(getVariableInfo("answer_compare_percent"))}
+                /></InlineFeedback>.</EditableParagraph>
         </Block>
     </StackLayout>,
 
     <StackLayout key="layout-compare-question-better" maxWidth="xl">
         <Block id="compare-question-better" padding="md">
-            <EditableParagraph id="para-compare-question-better" blockId="compare-question-better">Stall A shades 5 of its 10 slices and Stall B shades 3 of its 6. The stall worth queueing at is <InlineFeedback varName={"answer_compare_better"} correctValue={"They are equal"} caseSensitive={false} position={"terminal"} successMessage={"— exactly, both wheels give half their slices away, so both markers land on 50%"} failureMessage={"— have another look"} hint={"Stall A has more prizes, but it also has more slices to share them between"} reviewLabel={"Review this concept"} visualizationHint={{"blockId": "compare-visual", "hintKey": "compare-equal-chance-hint", "label": "Discover it yourself", "resetVars": {"wheelAPrizes": 3, "wheelBPrizes": 2, "compareHighlight": ""}, "steps": [{"gesture": "click", "label": "Shade Stall A until 5 of its 10 slices win", "position": {"x": "28%", "y": "38%"}, "completionVar": "wheelAPrizes", "completionValue": 5, "completionTolerance": 0.4}, {"gesture": "click", "label": "Now shade Stall B until 3 of its 6 win — watch where the two markers land", "position": {"x": "72%", "y": "38%"}, "completionVar": "wheelBPrizes", "completionValue": 3, "completionTolerance": 0.4}]}}><InlineClozeChoice varName={"answer_compare_better"} correctAnswer={"They are equal"} options={["Stall A", "Stall B", "They are equal"]} placeholder={"???"} color={"#F57C00"} bgColor={"rgba(59, 130, 246, 0.35)"} id={"choice-1787882996279-wdcbc"} /></InlineFeedback>.</EditableParagraph>
+            <EditableParagraph id="para-compare-question-better" blockId="compare-question-better">Stall A shades 5 of its 10 slices and Stall B shades 3 of its 6. The stall worth queueing at is <InlineFeedback varName={"answer_compare_better"} correctValue={"They are equal"} caseSensitive={false} position={"terminal"} successMessage={"— exactly, both wheels give half their slices away, so both markers land on 50%"} failureMessage={"— have another look"} hint={"Stall A has more prizes, but it also has more slices to share them between"} reviewLabel={"Review this concept"} visualizationHint={{"blockId": "compare-visual", "hintKey": "compare-equal-chance-hint", "label": "Discover it yourself", "resetVars": {"wheelAPrizes": 3, "wheelBPrizes": 2, "compareHighlight": ""}, "steps": [{"gesture": "click", "label": "Shade Stall A until 5 of its 10 slices win", "position": {"x": "28%", "y": "38%"}, "completionVar": "wheelAPrizes", "completionValue": 5, "completionTolerance": 0.4}, {"gesture": "click", "label": "Now shade Stall B until 3 of its 6 win — watch where the two markers land", "position": {"x": "72%", "y": "38%"}, "completionVar": "wheelBPrizes", "completionValue": 3, "completionTolerance": 0.4}]}}><InlineClozeChoice
+                    varName="answer_compare_better"
+                    correctAnswer="They are equal"
+                    options={["Stall A", "Stall B", "They are equal"]}
+                    id="choice-compare-better"
+                    {...choicePropsFromDefinition(getVariableInfo("answer_compare_better"))}
+                /></InlineFeedback>.</EditableParagraph>
         </Block>
     </StackLayout>,
 ];

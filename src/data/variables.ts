@@ -92,7 +92,7 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         min: 0,
         max: 8,
         step: 1,
-        color: '#E08A72',
+        color: '#C4704E',
     },
     bagBlueCounters: {
         defaultValue: 3,
@@ -102,7 +102,7 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         min: 0,
         max: 16,
         step: 1,
-        color: '#62CCF9',
+        color: '#2E9BD1',
     },
     countingHighlight: {
         defaultValue: '',
@@ -133,7 +133,7 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         min: 0,
         max: 100,
         step: 1,
-        color: '#AC8BF9',
+        color: '#8B6BE0',
     },
     fiftySpins: {
         defaultValue: 0,
@@ -199,7 +199,7 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         min: 0,
         max: 10,
         step: 1,
-        color: '#62D0AD',
+        color: '#3FA98A',
     },
     wheelBPrizes: {
         defaultValue: 2,
@@ -209,7 +209,7 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         min: 0,
         max: 6,
         step: 1,
-        color: '#AC8BF9',
+        color: '#8B6BE0',
     },
     compareHighlight: {
         defaultValue: '',
@@ -237,6 +237,28 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         options: ['Stall A', 'Stall B', 'They are equal'],
         correctAnswer: 'They are equal',
         color: '#8E90F5',
+    },
+    answer_fair_wheel_numerator: {
+        defaultValue: '',
+        type: 'select',
+        label: 'Top of the fair wheel fraction',
+        description: 'Student answer: winning slices on the eight-slice fair wheel (1 winner)',
+        placeholder: '?',
+        options: ['1', '7', '8'],
+        correctAnswer: '1',
+        color: '#C4704E',
+        bgColor: 'rgba(224, 138, 114, 0.18)',
+    },
+    answer_fair_wheel_denominator: {
+        defaultValue: '',
+        type: 'select',
+        label: 'Bottom of the fair wheel fraction',
+        description: 'Student answer: all slices on the eight-slice fair wheel',
+        placeholder: '?',
+        options: ['1', '7', '8'],
+        correctAnswer: '8',
+        color: '#475569',
+        bgColor: 'rgba(100, 116, 139, 0.18)',
     },
     answer_counting_equivalent: {
         defaultValue: '',

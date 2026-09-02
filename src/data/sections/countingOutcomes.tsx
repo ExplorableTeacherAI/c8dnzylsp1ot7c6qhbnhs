@@ -7,12 +7,13 @@ import {
     InlineClozeInput,
     InlineFeedback,
     InlineLinkedHighlight,
+    InlineTooltip,
     InteractionHintSequence,
 } from "@/components/atoms";
 import { FormulaBlock, Figure } from "@/components/molecules";
 import { useVar, useSetVar } from "@/stores";
 import { clamp, useSpring } from "@/lib/motion";
-import { getVariableInfo, clozePropsFromDefinition } from "../variables";
+import { getVariableInfo, clozePropsFromDefinition, scrubVarsFromDefinitions } from "../variables";
 
 // ── Domain model ─────────────────────────────────────────────────────────────
 
@@ -22,7 +23,9 @@ const MAX_RED = 8;
 const MAX_BLUE = 16;
 
 const RED = "#E08A72";
+const RED_TEXT = "#C4704E";
 const BLUE = "#62CCF9";
+const BLUE_TEXT = "#2E9BD1";
 const INK = "#64748B";
 const INK_DARK = "#334155";
 const ACCENT = "#62D0AD";
@@ -168,10 +171,10 @@ function CounterBagDrawing() {
                         filter="url(#counter-shadow)" />
                     <circle cx={TRAY_BLUE.x} cy={TRAY_BLUE.y} r={26} fill="transparent" />
                 </g>
-                <text x={TRAY_RED.x} y={214} textAnchor="middle" fontSize="12" fill={RED}>
+                <text x={TRAY_RED.x} y={214} textAnchor="middle" fontSize="12" fill={RED_TEXT}>
                     Red wins
                 </text>
-                <text x={TRAY_BLUE.x} y={214} textAnchor="middle" fontSize="12" fill={INK}>
+                <text x={TRAY_BLUE.x} y={214} textAnchor="middle" fontSize="12" fill={BLUE_TEXT}>
                     Blue loses
                 </text>
             </g>
@@ -235,7 +238,7 @@ function CounterBagDrawing() {
                 </text>
                 {total > 0 && (
                     <g style={{ fontVariantNumeric: "tabular-nums" }}>
-                        <text x={330} y={362} textAnchor="middle" fontSize="16" fill={RED}>
+                        <text x={330} y={362} textAnchor="middle" fontSize="16" fill={RED_TEXT}>
                             {red}
                         </text>
                         <line x1={310} y1={368} x2={350} y2={368} stroke={INK_DARK} strokeWidth="2"
@@ -301,7 +304,14 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-setup" maxWidth="xl">
         <Block id="counting-setup" padding="sm">
             <EditableParagraph id="para-counting-setup" blockId="counting-setup">
-                Chance begins with counting, not with guessing. Before anyone can say how likely a prize is, they need every result that could happen, and how many of those results count as a win. Drag red and blue counters from the tray into the bag until the reds make up exactly one in four, and watch the bar and the fraction move with every counter you add.
+                Chance begins with counting, not with guessing. Before anyone can say how likely a prize is, they need every{" "}
+                <InlineTooltip
+                    id="tooltip-counting-outcome"
+                    tooltip="An outcome is one single thing that could happen, like drawing one particular counter out of the bag."
+                >
+                    outcome
+                </InlineTooltip>
+                {" "}that could happen, and how many of those outcomes count as a win. Drag red and blue counters from the tray into the bag until the reds make up exactly one in four, and watch the bar and the fraction move with every counter you add.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -314,7 +324,10 @@ export const countingOutcomesBlocks: ReactElement[] = [
 
     <StackLayout key="layout-counting-rule" maxWidth="xl">
         <Block id="counting-rule" padding="lg">
-            <FormulaBlock latex="P(\text{win}) = \frac{\text{number of winning results}}{\text{number of possible results}}" />
+            <FormulaBlock
+                latex="P(\text{win}) = \frac{\textcolor{#C4704E}{\text{winning outcomes}}}{\textcolor{#475569}{\text{all outcomes}}} = \frac{\scrub{bagRedCounters}}{\scrub{bagRedCounters} + \scrub{bagBlueCounters}}"
+                variables={scrubVarsFromDefinitions(["bagRedCounters", "bagBlueCounters"])}
+            />
         </Block>
     </StackLayout>,
 
@@ -326,7 +339,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
                     id="link-counting-red"
                     varName="countingHighlight"
                     highlightId="redCounters"
-                    color="#E08A72"
+                    color="#C4704E"
                     bgColor="rgba(224, 138, 114, 0.2)"
                 >
                     winning counters
@@ -341,8 +354,32 @@ export const countingOutcomesBlocks: ReactElement[] = [
                 >
                     every counter in the bag
                 </InlineLinkedHighlight>
-                {" "}underneath. That is why 1 red out of 4 and 4 reds out of 16 both sit on the target: the share is what counts, not the size of the pile.
+                {" "}underneath. That is why 1 red out of 4 and 4 reds out of 16 both sit on the target: the share is what counts, not the size of the pile. So back at that eight-slice fair wheel with its single winning slice, the fraction fills in like this.
             </EditableParagraph>
+        </Block>
+    </StackLayout>,
+
+    <StackLayout key="layout-counting-fair-wheel-fraction" maxWidth="xl">
+        <Block id="counting-fair-wheel-fraction" padding="lg">
+            <FormulaBlock
+                latex="P(\text{win on the fair wheel}) = \frac{\choice{answer_fair_wheel_numerator}}{\choice{answer_fair_wheel_denominator}}"
+                clozeChoices={{
+                    answer_fair_wheel_numerator: {
+                        correctAnswer: "1",
+                        options: ["1", "7", "8"],
+                        placeholder: "?",
+                        color: "#C4704E",
+                        bgColor: "rgba(224, 138, 114, 0.18)",
+                    },
+                    answer_fair_wheel_denominator: {
+                        correctAnswer: "8",
+                        options: ["1", "7", "8"],
+                        placeholder: "?",
+                        color: "#475569",
+                        bgColor: "rgba(100, 116, 139, 0.18)",
+                    },
+                }}
+            />
         </Block>
     </StackLayout>,
 

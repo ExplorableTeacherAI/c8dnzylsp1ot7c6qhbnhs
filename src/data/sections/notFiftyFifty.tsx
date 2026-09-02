@@ -8,15 +8,19 @@ import {
     InlineClozeInput,
     InlineFeedback,
     InlineLinkedHighlight,
+    InlineScrubbleNumber,
+    InlineTooltip,
+    InlineTrigger,
     InteractionHintSequence,
 } from "@/components/atoms";
-import { Figure } from "@/components/molecules";
+import { Figure, FormulaBlock } from "@/components/molecules";
 import { useVar, useSetVar } from "@/stores";
 import { clamp, useRafLoop, useSpring } from "@/lib/motion";
 import {
     getVariableInfo,
     clozePropsFromDefinition,
     choicePropsFromDefinition,
+    numberPropsFromDefinition,
 } from "../variables";
 
 // ── Domain model: ten slices, one of them wins ───────────────────────────────
@@ -290,7 +294,20 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
     <StackLayout key="layout-fifty-setup" maxWidth="xl">
         <Block id="fifty-setup" padding="sm">
             <EditableParagraph id="para-fifty-setup" blockId="fifty-setup">
-                Ask someone at the fair whether they will win, and you often hear the same answer: either you win or you don't, so it must be fifty-fifty. Before any spinning happens, drag the divider to split the bar where you think the chances really sit. Then let the wheel spin and see how close your split was.
+                Ask someone at the fair whether they will win, and you often hear the same answer: either you win or you don't, so it must be{" "}
+                <InlineTooltip
+                    id="tooltip-fifty-even-chance"
+                    tooltip="Fifty-fifty means an even chance: both results are equally likely, the way heads and tails are on a coin."
+                >
+                    fifty-fifty
+                </InlineTooltip>
+                . Before any spinning, drag the violet divider to split the bar where you think the chances really sit, which right now puts winning at{" "}
+                <InlineScrubbleNumber
+                    varName="fiftyPrediction"
+                    {...numberPropsFromDefinition(getVariableInfo("fiftyPrediction"))}
+                    formatValue={(v) => `${v}%`}
+                />
+                . Then let the wheel spin and see how close that split was.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -304,7 +321,7 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
     <StackLayout key="layout-fifty-insight" maxWidth="xl">
         <Block id="fifty-insight" padding="sm">
             <EditableParagraph id="para-fifty-insight" blockId="fifty-insight">
-                Two outcomes is not the same thing as two equal chances. A win and a loss are only fifty-fifty when exactly half of the results win, and here just{" "}
+                Two outcomes is not the same thing as two equal chances. Only{" "}
                 <InlineLinkedHighlight
                     id="link-fifty-prize-slice"
                     varName="fiftyHighlight"
@@ -314,7 +331,7 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
                 >
                     one slice in ten
                 </InlineLinkedHighlight>
-                {" "}does, which is why{" "}
+                {" "}wins here, so{" "}
                 <InlineLinkedHighlight
                     id="link-fifty-real-bar"
                     varName="fiftyHighlight"
@@ -324,8 +341,43 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
                 >
                     the real split
                 </InlineLinkedHighlight>
-                {" "}settles near a tenth of the bar however long you spin.
+                {" "}settles near a tenth of the bar however long you spin. Snap your guess to{" "}
+                <InlineTrigger
+                    id="trigger-fifty-even-guess"
+                    varName="fiftyPrediction"
+                    value={50}
+                    color="#8B6BE0"
+                    bgColor="rgba(172, 139, 249, 0.18)"
+                >
+                    fifty-fifty
+                </InlineTrigger>
+                , then to the true{" "}
+                <InlineTrigger
+                    id="trigger-fifty-true-chance"
+                    varName="fiftyPrediction"
+                    value={10}
+                    color="#3FA98A"
+                    bgColor="rgba(98, 208, 173, 0.18)"
+                >
+                    one in ten
+                </InlineTrigger>
+                , and see which one the spins agree with.
             </EditableParagraph>
+        </Block>
+    </StackLayout>,
+
+    <StackLayout key="layout-fifty-formula" maxWidth="xl">
+        <Block id="fifty-formula" padding="lg">
+            <FormulaBlock
+                latex="P(\text{win}) = \frac{\highlight{prizeSlice}{1}}{10} = \textcolor{#3FA98A}{10\%}\quad \text{not}\quad \textcolor{#8B6BE0}{50\%}"
+                linkedHighlights={{
+                    prizeSlice: {
+                        varName: "fiftyHighlight",
+                        color: "#3FA98A",
+                        bgColor: "rgba(98, 208, 173, 0.2)",
+                    },
+                }}
+            />
         </Block>
     </StackLayout>,
 
