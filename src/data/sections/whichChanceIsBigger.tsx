@@ -223,7 +223,7 @@ function PercentLineDrawing() {
             </defs>
             <g opacity={axisOpacity} style={ease}>
                 <text x={230} y={44} textAnchor="middle" fontSize="12" fill={INK}>
-                    0% means never, 100% means certain
+                    P = 0 is impossible, P = 1 is certain
                 </text>
                 <line x1={LINE.x0} y1={LINE.y} x2={LINE.x1} y2={LINE.y} stroke={INK} strokeWidth="2"
                     strokeLinecap="round" />
@@ -231,8 +231,12 @@ function PercentLineDrawing() {
                     <g key={tick}>
                         <line x1={percentToX(tick)} y1={LINE.y - 6} x2={percentToX(tick)} y2={LINE.y + 6}
                             stroke={INK} strokeWidth="1.5" strokeLinecap="round" />
-                        <text x={percentToX(tick)} y={LINE.y + 28} textAnchor="middle" fontSize="12" fill={INK}>
+                        <text x={percentToX(tick)} y={LINE.y + 26} textAnchor="middle" fontSize="12" fill={INK}>
                             {`${tick}%`}
+                        </text>
+                        <text x={percentToX(tick)} y={LINE.y + 44} textAnchor="middle" fontSize="11" fill="#94A3B8"
+                            style={{ fontVariantNumeric: "tabular-nums" }}>
+                            {(tick / 100).toFixed(2)}
                         </text>
                     </g>
                 ))}
@@ -253,7 +257,7 @@ function PercentLineFigure() {
                 setVar("wheelBPrizes", 2);
                 setVar("compareHighlight", "");
             }}
-            caption="Both stalls hang on one scale. Drag either marker along the line and the wheel beside it redraws to the nearest chance it can actually make."
+            caption="Both stalls hang on one probability scale, marked in percentages above and from 0 to 1 below. Drag either marker along the line and the wheel beside it redraws to the nearest probability it can actually make."
         >
             <PercentLineDrawing />
             <InteractionHintSequence
@@ -277,7 +281,7 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
     <StackLayout key="layout-compare-heading" maxWidth="xl">
         <Block id="compare-heading" padding="md">
             <EditableH2 id="h2-compare-heading" blockId="compare-heading">
-                Which Chance Is Bigger?
+                Comparing Probabilities on a 0 to 1 Scale
             </EditableH2>
         </Block>
     </StackLayout>,
@@ -295,7 +299,7 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
                     varName="wheelBPrizes"
                     {...numberPropsFromDefinition(getVariableInfo("wheelBPrizes"))}
                 />
-                {" "}of its 6. Click slices to shade or unshade a prize, and watch that stall's marker slide along the percentage line.
+                {" "}of its 6. Click slices to shade or unshade a prize, and watch that stall's marker slide along the probability scale.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -312,7 +316,7 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
     <StackLayout key="layout-compare-formula" maxWidth="xl">
         <Block id="compare-formula" padding="lg">
             <FormulaBlock
-                latex="\text{Stall } \highlight{wheelA}{A} = \frac{\scrub{wheelAPrizes}}{10} \qquad \text{Stall } \highlight{wheelB}{B} = \frac{\scrub{wheelBPrizes}}{6}"
+                latex="P(\highlight{wheelA}{A}) = \frac{\scrub{wheelAPrizes}}{10} \qquad P(\highlight{wheelB}{B}) = \frac{\scrub{wheelBPrizes}}{6}"
                 variables={scrubVarsFromDefinitions(["wheelAPrizes", "wheelBPrizes"])}
                 linkedHighlights={{
                     wheelA: {
@@ -335,7 +339,7 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
             <EditableParagraph id="para-compare-insight" blockId="compare-insight">
                 <InlineTooltip
                     id="tooltip-compare-percentage"
-                    tooltip="A percentage is a chance out of 100, so 30% means about 30 wins in every 100 spins."
+                    tooltip="The same probability can be written as a fraction, as a decimal from 0 to 1, or as a percentage out of 100: 3/10, 0.3 and 30% all mean the same thing."
                 >
                     Percentages
                 </InlineTooltip>
@@ -369,7 +373,7 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
                 >
                     impossible
                 </InlineTrigger>
-                {" "}at 0% to{" "}
+                {" "}at P = 0 to{" "}
                 <InlineTrigger
                     id="trigger-compare-certain"
                     varName="wheelAPrizes"
@@ -379,14 +383,14 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
                 >
                     certain
                 </InlineTrigger>
-                {" "}at 100%, with every real chance in between.
+                {" "}at P = 1, with every possible probability in between.
             </EditableParagraph>
         </Block>
     </StackLayout>,
 
     <StackLayout key="layout-compare-question-percent" maxWidth="xl">
         <Block id="compare-question-percent" padding="md">
-            <EditableParagraph id="para-compare-question-percent" blockId="compare-question-percent">A third stall arrives with a wheel of 25 slices, 4 of them winners. On the same scale, that stall sits at <InlineFeedback varName={"answer_compare_percent"} correctValue={["16%", "16", "16 %", "0.16"]} caseSensitive={false} position={"terminal"} successMessage={"— yes, 4 out of 25 is 16%, which lands well left of both of the other stalls"} failureMessage={"— not quite yet"} hint={"4 out of 25 is the same as 16 out of 100"} reviewBlockId={"compare-percent-line"} reviewLabel={"Look at the percentage line again"}><InlineClozeInput
+            <EditableParagraph id="para-compare-question-percent" blockId="compare-question-percent">A third stall arrives with a wheel of 25 equally likely slices, 4 of them winners. On the same probability scale, that stall sits at <InlineFeedback varName={"answer_compare_percent"} correctValue={["16%", "16", "16 %", "0.16"]} caseSensitive={false} position={"terminal"} successMessage={"— yes, 4 out of 25 is 0.16, or 16%, which lands well left of both of the other stalls"} failureMessage={"— not quite yet"} hint={"4 out of 25 is the same as 16 out of 100"} reviewBlockId={"compare-percent-line"} reviewLabel={"Look at the percentage line again"}><InlineClozeInput
                     varName="answer_compare_percent"
                     correctAnswer={["16%", "16", "16 %", "0.16"]}
                     id="cloze-compare-percent"
@@ -397,7 +401,7 @@ export const whichChanceIsBiggerBlocks: ReactElement[] = [
 
     <StackLayout key="layout-compare-question-better" maxWidth="xl">
         <Block id="compare-question-better" padding="md">
-            <EditableParagraph id="para-compare-question-better" blockId="compare-question-better">Stall A shades 5 of its 10 slices and Stall B shades 3 of its 6. The stall worth queueing at is <InlineFeedback varName={"answer_compare_better"} correctValue={"They are equal"} caseSensitive={false} position={"terminal"} successMessage={"— exactly, both wheels give half their slices away, so both markers land on 50%"} failureMessage={"— have another look"} hint={"Stall A has more prizes, but it also has more slices to share them between"} reviewLabel={"Review this concept"} visualizationHint={{"blockId": "compare-visual", "hintKey": "compare-equal-chance-hint", "label": "Discover it yourself", "resetVars": {"wheelAPrizes": 3, "wheelBPrizes": 2, "compareHighlight": ""}, "steps": [{"gesture": "click", "label": "Shade Stall A until 5 of its 10 slices win", "position": {"x": "28%", "y": "38%"}, "completionVar": "wheelAPrizes", "completionValue": 5, "completionTolerance": 0.4}, {"gesture": "click", "label": "Now shade Stall B until 3 of its 6 win — watch where the two markers land", "position": {"x": "72%", "y": "38%"}, "completionVar": "wheelBPrizes", "completionValue": 3, "completionTolerance": 0.4}]}}><InlineClozeChoice
+            <EditableParagraph id="para-compare-question-better" blockId="compare-question-better">Stall A shades 5 of its 10 slices and Stall B shades 3 of its 6. The stall with the greater probability is <InlineFeedback varName={"answer_compare_better"} correctValue={"They are equal"} caseSensitive={false} position={"terminal"} successMessage={"— exactly, both wheels give half their slices away, so both probabilities are 0.5"} failureMessage={"— have another look"} hint={"Stall A has more favourable outcomes, but it also has a larger sample space"} reviewLabel={"Review this concept"} visualizationHint={{"blockId": "compare-visual", "hintKey": "compare-equal-chance-hint", "label": "Discover it yourself", "resetVars": {"wheelAPrizes": 3, "wheelBPrizes": 2, "compareHighlight": ""}, "steps": [{"gesture": "click", "label": "Shade Stall A until 5 of its 10 slices win", "position": {"x": "28%", "y": "38%"}, "completionVar": "wheelAPrizes", "completionValue": 5, "completionTolerance": 0.4}, {"gesture": "click", "label": "Now shade Stall B until 3 of its 6 win — watch where the two markers land", "position": {"x": "72%", "y": "38%"}, "completionVar": "wheelBPrizes", "completionValue": 3, "completionTolerance": 0.4}]}}><InlineClozeChoice
                     varName="answer_compare_better"
                     correctAnswer="They are equal"
                     options={["Stall A", "Stall B", "They are equal"]}

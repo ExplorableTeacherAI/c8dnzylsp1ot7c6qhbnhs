@@ -183,11 +183,11 @@ function PredictTheSplitDrawing({ onPredictionMoved }: { onPredictionMoved: () =
             {/* The student's predicted split */}
             <g opacity={fade("guessBar")} style={ease} {...hoverProps("guessBar")}>
                 <text x={TRACK.x0} y={312} fontSize="12" fill={GUESS_TEXT}>
-                    Your guess
+                    Predicted probability
                 </text>
                 <text x={TRACK.x1} y={312} textAnchor="end" fontSize="12" fill={GUESS_TEXT}
                     style={{ fontVariantNumeric: "tabular-nums" }}>
-                    {`Win ${fmtPercent(prediction)}`}
+                    {`P(W) = ${fmtPercent(prediction)}`}
                 </text>
                 <rect x={TRACK.x0} y={GUESS_BAR.y} width={TRACK_W} height={GUESS_BAR.h} rx={6} fill={PAPER} />
                 <rect x={TRACK.x0} y={GUESS_BAR.y} width={guessX - TRACK.x0} height={GUESS_BAR.h} rx={6}
@@ -222,11 +222,11 @@ function PredictTheSplitDrawing({ onPredictionMoved }: { onPredictionMoved: () =
             {/* What the spins actually produced */}
             <g opacity={fade("realBar")} style={ease} {...hoverProps("realBar")}>
                 <text x={TRACK.x0} y={376} fontSize="12" fill={REAL_TEXT}>
-                    What actually happened
+                    Relative frequency
                 </text>
                 <text x={TRACK.x1} y={376} textAnchor="end" fontSize="12" fill={REAL_TEXT}
                     style={{ fontVariantNumeric: "tabular-nums" }}>
-                    {spins === 0 ? "no spins yet" : `Win ${fmtPercent(realShare * 100)} of ${spins} spins`}
+                    {spins === 0 ? "no spins yet" : `${fmtPercent(realShare * 100)} of ${spins} spins`}
                 </text>
                 <rect x={TRACK.x0} y={REAL_BAR.y} width={TRACK_W} height={REAL_BAR.h} rx={6} fill={PAPER} />
                 {lit("realBar") && (
@@ -255,7 +255,7 @@ function PredictTheSplitFigure() {
                 setVar("fiftySpinning", false);
                 setVar("fiftyHighlight", "");
             }}
-            caption="Split the top bar where you think the win and lose chances sit, then press play to spin the wheel again and again. The lower bar fills in with what the spins actually gave."
+            caption="Split the top bar where you think the probability of winning sits, then press play to spin the wheel again and again. The lower bar fills in with the relative frequency the spins actually produced."
         >
             <PredictTheSplitDrawing onPredictionMoved={() => setMoved(true)} />
             <InteractionHintSequence
@@ -286,7 +286,7 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
     <StackLayout key="layout-fifty-heading" maxWidth="xl">
         <Block id="fifty-heading" padding="md">
             <EditableH2 id="h2-fifty-heading" blockId="fifty-heading">
-                Not Everything Is 50-50
+                Equally Likely Outcomes
             </EditableH2>
         </Block>
     </StackLayout>,
@@ -297,11 +297,11 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
                 Ask someone at the fair whether they will win, and you often hear the same answer: either you win or you don't, so it must be{" "}
                 <InlineTooltip
                     id="tooltip-fifty-even-chance"
-                    tooltip="Fifty-fifty means an even chance: both results are equally likely, the way heads and tails are on a coin."
+                    tooltip="Fifty-fifty means the two outcomes are equally likely, each with a probability of 0.5, the way heads and tails are on a coin."
                 >
                     fifty-fifty
                 </InlineTooltip>
-                . Before any spinning, drag the violet divider to split the bar where you think the chances really sit, which right now puts winning at{" "}
+                . Before any spinning, drag the violet divider to split the bar where you think the probability really sits, which right now puts winning at{" "}
                 <InlineScrubbleNumber
                     varName="fiftyPrediction"
                     {...numberPropsFromDefinition(getVariableInfo("fiftyPrediction"))}
@@ -321,7 +321,14 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
     <StackLayout key="layout-fifty-insight" maxWidth="xl">
         <Block id="fifty-insight" padding="sm">
             <EditableParagraph id="para-fifty-insight" blockId="fifty-insight">
-                Two outcomes is not the same thing as two equal chances. Only{" "}
+                Two outcomes is not the same thing as two{" "}
+                <InlineTooltip
+                    id="tooltip-fifty-equally-likely"
+                    tooltip="Outcomes are equally likely when each one has the same probability, so no result is favoured over another."
+                >
+                    equally likely
+                </InlineTooltip>
+                {" "}outcomes. Only{" "}
                 <InlineLinkedHighlight
                     id="link-fifty-prize-slice"
                     varName="fiftyHighlight"
@@ -339,7 +346,7 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
                     color="#3FA98A"
                     bgColor="rgba(98, 208, 173, 0.2)"
                 >
-                    the real split
+                    the relative frequency
                 </InlineLinkedHighlight>
                 {" "}settles near a tenth of the bar however long you spin. Snap your guess to{" "}
                 <InlineTrigger
@@ -369,7 +376,7 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
     <StackLayout key="layout-fifty-formula" maxWidth="xl">
         <Block id="fifty-formula" padding="lg">
             <FormulaBlock
-                latex="P(\text{win}) = \frac{\highlight{prizeSlice}{1}}{10} = \textcolor{#3FA98A}{10\%}\quad \text{not}\quad \textcolor{#8B6BE0}{50\%}"
+                latex="P(W) = \frac{\highlight{prizeSlice}{1}}{10} = 0.1 = \textcolor{#3FA98A}{10\%}\quad \text{not}\quad \textcolor{#8B6BE0}{50\%}"
                 linkedHighlights={{
                     prizeSlice: {
                         varName: "fiftyHighlight",
@@ -384,7 +391,7 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
     <StackLayout key="layout-fifty-question-red" maxWidth="xl">
         <Block id="fifty-question-red" padding="md">
             <EditableParagraph id="para-fifty-question-red" blockId="fifty-question-red">
-                A bag holds 1 red counter and 9 blue ones, and you reach in without looking. The chance of pulling out the red one is{" "}
+                A bag holds 1 red counter and 9 blue ones, and every counter is equally likely to be drawn. The probability of pulling out the red one is{" "}
                 <InlineFeedback
                     varName="answer_fifty_red"
                     correctValue="10%"
@@ -432,7 +439,7 @@ export const notFiftyFiftyBlocks: ReactElement[] = [
     <StackLayout key="layout-fifty-question-spinner" maxWidth="xl">
         <Block id="fifty-question-spinner" padding="md">
             <EditableParagraph id="para-fifty-question-spinner" blockId="fifty-question-spinner">
-                A different spinner has 8 equal sections, and 2 of them win. Written as a percentage, the chance of winning one spin is{" "}
+                A different spinner has 8 equally likely sections, and 2 of them win. Written as a percentage, the probability of winning one spin is{" "}
                 <InlineFeedback
                     varName="answer_fifty_spinner"
                     correctValue={["25%", "25", "25 %", "0.25"]}

@@ -238,6 +238,12 @@ function CounterBagDrawing() {
                 </text>
                 {total > 0 && (
                     <g style={{ fontVariantNumeric: "tabular-nums" }}>
+                        <text x={298} y={362} textAnchor="end" fontSize="12" fill={RED_TEXT}>
+                            n(A)
+                        </text>
+                        <text x={298} y={390} textAnchor="end" fontSize="12" fill="#475569">
+                            n(S)
+                        </text>
                         <text x={330} y={362} textAnchor="middle" fontSize="16" fill={RED_TEXT}>
                             {red}
                         </text>
@@ -272,7 +278,7 @@ function CounterBagFigure() {
                 setVar("bagBlueCounters", 3);
                 setVar("countingHighlight", "");
             }}
-            caption="Drag counters from the tray into the bag, and click a counter in the bag to take it back out. The upright tick on the bar marks the target of 1 in 4, and the fraction and percentage underneath update with every counter."
+            caption="Drag counters from the tray into the bag, and click a counter in the bag to take it back out. The upright tick on the bar marks the target ratio of 1 in 4, and n(A) over n(S) underneath updates with every counter."
         >
             <CounterBagDrawing />
             <InteractionHintSequence
@@ -296,7 +302,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-heading" maxWidth="xl">
         <Block id="counting-heading" padding="md">
             <EditableH2 id="h2-counting-heading" blockId="counting-heading">
-                Counting Every Outcome
+                Sample Space and Favourable Outcomes
             </EditableH2>
         </Block>
     </StackLayout>,
@@ -304,14 +310,21 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-setup" maxWidth="xl">
         <Block id="counting-setup" padding="sm">
             <EditableParagraph id="para-counting-setup" blockId="counting-setup">
-                Chance begins with counting, not with guessing. Before anyone can say how likely a prize is, they need every{" "}
+                Probability begins with counting, not with guessing. It needs the{" "}
                 <InlineTooltip
-                    id="tooltip-counting-outcome"
-                    tooltip="An outcome is one single thing that could happen, like drawing one particular counter out of the bag."
+                    id="tooltip-counting-sample-space"
+                    tooltip="The sample space, written S, is the complete set of outcomes that could happen. Here it is every counter in the bag."
                 >
-                    outcome
+                    sample space
                 </InlineTooltip>
-                {" "}that could happen, and how many of those outcomes count as a win. Drag red and blue counters from the tray into the bag until the reds make up exactly one in four, and watch the bar and the fraction move with every counter you add.
+                , every outcome that could happen, and the{" "}
+                <InlineTooltip
+                    id="tooltip-counting-favourable"
+                    tooltip="A favourable outcome is one that counts as a success for the event being measured, here drawing a red counter."
+                >
+                    favourable outcomes
+                </InlineTooltip>
+                {" "}inside it. Drag red and blue counters from the tray into the bag until the reds make up exactly one in four, and watch the ratio move with every counter you add.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -325,7 +338,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-rule" maxWidth="xl">
         <Block id="counting-rule" padding="lg">
             <FormulaBlock
-                latex="P(\text{win}) = \frac{\textcolor{#C4704E}{\text{winning outcomes}}}{\textcolor{#475569}{\text{all outcomes}}} = \frac{\scrub{bagRedCounters}}{\scrub{bagRedCounters} + \scrub{bagBlueCounters}}"
+                latex="P(A) = \frac{\textcolor{#C4704E}{n(A)}}{\textcolor{#475569}{n(S)}} = \frac{\scrub{bagRedCounters}}{\scrub{bagRedCounters} + \scrub{bagBlueCounters}}"
                 variables={scrubVarsFromDefinitions(["bagRedCounters", "bagBlueCounters"])}
             />
         </Block>
@@ -334,7 +347,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-insight" maxWidth="xl">
         <Block id="counting-insight" padding="sm">
             <EditableParagraph id="para-counting-insight" blockId="counting-insight">
-                The chance of drawing red is a fraction: the{" "}
+                The probability of drawing red is a ratio: the{" "}
                 <InlineLinkedHighlight
                     id="link-counting-red"
                     varName="countingHighlight"
@@ -342,9 +355,9 @@ export const countingOutcomesBlocks: ReactElement[] = [
                     color="#C4704E"
                     bgColor="rgba(224, 138, 114, 0.2)"
                 >
-                    winning counters
+                    favourable outcomes
                 </InlineLinkedHighlight>
-                {" "}on top, and{" "}
+                {" "}n(A) on top, and the{" "}
                 <InlineLinkedHighlight
                     id="link-counting-all"
                     varName="countingHighlight"
@@ -352,9 +365,9 @@ export const countingOutcomesBlocks: ReactElement[] = [
                     color="#64748B"
                     bgColor="rgba(100, 116, 139, 0.2)"
                 >
-                    every counter in the bag
+                    whole sample space
                 </InlineLinkedHighlight>
-                {" "}underneath. That is why 1 red out of 4 and 4 reds out of 16 both sit on the target: the share is what counts, not the size of the pile. So back at that eight-slice fair wheel with its single winning slice, the fraction fills in like this.
+                {" "}n(S) underneath. That is why 1 red out of 4 and 4 reds out of 16 give the same probability: the ratio is what counts, not the size of the sample space. So back at that eight-slice fair wheel with its single winning slice, the fraction fills in like this.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -362,7 +375,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-fair-wheel-fraction" maxWidth="xl">
         <Block id="counting-fair-wheel-fraction" padding="lg">
             <FormulaBlock
-                latex="P(\text{win on the fair wheel}) = \frac{\choice{answer_fair_wheel_numerator}}{\choice{answer_fair_wheel_denominator}}"
+                latex="P(W) = \frac{n(W)}{n(S)} = \frac{\choice{answer_fair_wheel_numerator}}{\choice{answer_fair_wheel_denominator}}"
                 clozeChoices={{
                     answer_fair_wheel_numerator: {
                         correctAnswer: "1",
@@ -386,7 +399,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-question-percent" maxWidth="xl">
         <Block id="counting-question-percent" padding="md">
             <EditableParagraph id="para-counting-question-percent" blockId="counting-question-percent">
-                A prize wheel at another stall is cut into 20 equal slices, and 5 of them win. Written as a percentage, the chance of winning one spin is{" "}
+                A prize wheel at another stall is cut into 20 equally likely slices, and 5 of them win. Written as a percentage, the probability of winning one spin is{" "}
                 <InlineFeedback
                     varName="answer_counting_percent"
                     correctValue={["25%", "25", "25 %", "0.25"]}
@@ -410,7 +423,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-question-equivalent" maxWidth="xl">
         <Block id="counting-question-equivalent" padding="md">
             <EditableParagraph id="para-counting-question-equivalent" blockId="counting-question-equivalent">
-                A bag with 1 red counter out of 4 gives exactly the same chance as a bag of 4 red counters, provided the total number of counters in it is{" "}
+                A bag with 1 red counter out of 4 gives exactly the same probability as a bag of 4 red counters, provided the size of its sample space is{" "}
                 <InlineFeedback
                     varName="answer_counting_equivalent"
                     correctValue="16"

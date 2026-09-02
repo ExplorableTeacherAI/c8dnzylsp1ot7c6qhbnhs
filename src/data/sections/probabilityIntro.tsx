@@ -1,13 +1,13 @@
 import { type ReactElement } from "react";
 import { Block } from "@/components/templates";
 import { StackLayout } from "@/components/layouts";
-import { EditableH1, EditableParagraph } from "@/components/atoms";
+import { EditableH1, EditableParagraph, InlineTooltip } from "@/components/atoms";
 
 export const probabilityIntroBlocks: ReactElement[] = [
     <StackLayout key="layout-intro-title" maxWidth="xl">
         <Block id="intro-title" padding="md">
             <EditableH1 id="h1-intro-title" blockId="intro-title">
-                Probability
+                Theoretical Probability
             </EditableH1>
         </Block>
     </StackLayout>,
@@ -23,7 +23,14 @@ export const probabilityIntroBlocks: ReactElement[] = [
     <StackLayout key="layout-intro-promise" maxWidth="xl">
         <Block id="intro-promise" padding="sm">
             <EditableParagraph id="para-intro-promise" blockId="intro-promise">
-                By the end of this lesson you will be able to work out the exact chance of a spin like that, written as a fraction. You already know how to write 3 out of 8 and turn it into a percentage, which is nearly all the maths you need. The new part is deciding what belongs on top and what belongs underneath.
+                By the end of this lesson you will be able to calculate the{" "}
+                <InlineTooltip
+                    id="tooltip-intro-theoretical-probability"
+                    tooltip="Theoretical probability is worked out by counting outcomes rather than by running an experiment, so it can be stated before a single spin happens."
+                >
+                    theoretical probability
+                </InlineTooltip>
+                {" "}of a single event like that spin, as a fraction and as a percentage. You already know how to write 3 out of 8 and convert it to a percentage, which is nearly all the mathematics you need. The new part is deciding which outcomes belong in the numerator and which belong in the denominator.
             </EditableParagraph>
         </Block>
     </StackLayout>,
