@@ -309,23 +309,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
 
     <StackLayout key="layout-counting-setup" maxWidth="xl">
         <Block id="counting-setup" padding="sm">
-            <EditableParagraph id="para-counting-setup" blockId="counting-setup">
-                Probability begins with counting, not with guessing. It needs the{" "}
-                <InlineTooltip
-                    id="tooltip-counting-sample-space"
-                    tooltip="The sample space, written S, is the complete set of outcomes that could happen. Here it is every counter in the bag."
-                >
-                    sample space
-                </InlineTooltip>
-                , every outcome that could happen, and the{" "}
-                <InlineTooltip
-                    id="tooltip-counting-favourable"
-                    tooltip="A favourable outcome is one that counts as a success for the event being measured, here drawing a red counter."
-                >
-                    favourable outcomes
-                </InlineTooltip>
-                {" "}inside it. Drag red and blue counters from the tray into the bag until the reds make up exactly one in four, and watch the ratio move with every counter you add.
-            </EditableParagraph>
+            <EditableParagraph id="para-counting-setup" blockId="counting-setup">Probability begins with counting, not with guessing. It needs the <InlineTooltip tooltip={"The sample space, written S, is the complete set of outcomes that could happen. Here it is every counter in the bag."} color={"#F59E0B"} bgColor={"rgba(245, 158, 11, 0.15)"} position={"auto"} maxWidth={400} id={"tooltip-counting-sample-space"}>sample space</InlineTooltip>, every outcome that could happen, and the <InlineTooltip tooltip={"A favourable outcome is one that counts as a success for the event being measured, here drawing a red counter."} color={"#C4704E"} bgColor={"rgba(245, 158, 11, 0.15)"} position={"auto"} maxWidth={400} id={"tooltip-counting-favourable"}>favourable outcomes</InlineTooltip> inside it. Drag red and blue counters from the tray into the bag until the reds make up exactly one in four, and watch the ratio move with every counter you add.</EditableParagraph>
         </Block>
     </StackLayout>,
 
