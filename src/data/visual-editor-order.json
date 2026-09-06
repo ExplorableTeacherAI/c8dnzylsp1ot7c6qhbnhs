@@ -6,8 +6,8 @@
     "intro-promise",
     "counting-heading",
     "counting-setup",
-    "counting-visual",
     "counting-rule",
+    "counting-visual",
     "counting-insight",
     "counting-question-percent",
     "counting-question-equivalent",
@@ -26,7 +26,12 @@
     "compare-question-better",
     "wrapup-heading",
     "wrapup-next",
-    "wrapup-insight"
+    "wrapup-insight",
+    "intro-meaning",
+    "counting-fair-wheel-fraction",
+    "fifty-formula",
+    "compare-formula",
+    "wrapup-real-example"
   ],
   "rows": [
     {
@@ -91,26 +96,20 @@
     },
     {
       "id": "layout-counting-visual",
-      "type": "stack",
+      "type": "split",
       "columns": [
+        [
+          "counting-rule"
+        ],
         [
           "counting-visual"
         ]
       ],
       "props": {
-        "maxWidth": "xl"
-      }
-    },
-    {
-      "id": "layout-counting-rule",
-      "type": "stack",
-      "columns": [
-        [
-          "counting-rule"
-        ]
-      ],
-      "props": {
-        "maxWidth": "xl"
+        "ratio": "1:1",
+        "gap": "lg",
+        "reverse": false,
+        "align": "start"
       }
     },
     {
@@ -324,6 +323,66 @@
       "columns": [
         [
           "wrapup-insight"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "editor-full-intro-meaning",
+      "type": "stack",
+      "columns": [
+        [
+          "intro-meaning"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "editor-full-counting-fair-wheel-fraction",
+      "type": "stack",
+      "columns": [
+        [
+          "counting-fair-wheel-fraction"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "editor-full-fifty-formula",
+      "type": "stack",
+      "columns": [
+        [
+          "fifty-formula"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "editor-full-compare-formula",
+      "type": "stack",
+      "columns": [
+        [
+          "compare-formula"
+        ]
+      ],
+      "props": {
+        "maxWidth": "xl"
+      }
+    },
+    {
+      "id": "editor-full-wrapup-real-example",
+      "type": "stack",
+      "columns": [
+        [
+          "wrapup-real-example"
         ]
       ],
       "props": {
