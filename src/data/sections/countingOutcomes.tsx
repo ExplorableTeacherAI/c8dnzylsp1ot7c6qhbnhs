@@ -35,7 +35,7 @@ const fmtPercent = (v: number) => `${v.toFixed(1)}%`;
 // ── Geometry ─────────────────────────────────────────────────────────────────
 
 const VIEW_W = 560;
-const VIEW_H = 400;
+const VIEW_H = 356; // the readout row (y 336) is the lowest ink
 const BAG = { x: 250, y: 104, w: 220, h: 180 };
 const COUNTER_R = 13;
 const COLS = 6;
@@ -44,7 +44,7 @@ const CELL_H = 33;
 const GRID_X0 = 262;
 const GRID_Y0 = BAG.y + BAG.h - 22;
 const TRAY_RED = { x: 78, y: 168 };
-const TRAY_BLUE = { x: 158, y: 168 };
+const TRAY_BLUE = { x: 170, y: 168 };
 const BAR = { x: 250, y: 298, w: 220, h: 12 };
 
 const counterPosition = (index: number) => ({
@@ -129,11 +129,11 @@ function CounterBagDrawing() {
 
             {/* Target, stated once at the top */}
             <g opacity={fade(false)} style={ease}>
-                <text x={360} y={44} textAnchor="middle" fontSize="13" fill={INK_DARK}>
+                <text x={360} y={44} textAnchor="middle" fontSize="16" fill={INK_DARK}>
                     Target: 1 red in every 4 counters
                 </text>
                 {onTarget && (
-                    <text x={360} y={68} textAnchor="middle" fontSize="13" fill={ACCENT}
+                    <text x={360} y={70} textAnchor="middle" fontSize="16" fill={ACCENT}
                         style={{ fontVariantNumeric: "tabular-nums" }}>
                         Target reached
                     </text>
@@ -142,7 +142,7 @@ function CounterBagDrawing() {
 
             {/* Tray of counters to drag from */}
             <g opacity={fade(false)} style={ease}>
-                <text x={118} y={112} textAnchor="middle" fontSize="12" fill={INK}>
+                <text x={124} y={112} textAnchor="middle" fontSize="15" fill={INK}>
                     Counter tray
                 </text>
                 {[TRAY_RED, TRAY_BLUE].map((spot, i) => (
@@ -171,10 +171,10 @@ function CounterBagDrawing() {
                         filter="url(#counter-shadow)" />
                     <circle cx={TRAY_BLUE.x} cy={TRAY_BLUE.y} r={26} fill="transparent" />
                 </g>
-                <text x={TRAY_RED.x} y={214} textAnchor="middle" fontSize="12" fill={RED_TEXT}>
+                <text x={TRAY_RED.x} y={216} textAnchor="middle" fontSize="15" fill={RED_TEXT}>
                     Red wins
                 </text>
-                <text x={TRAY_BLUE.x} y={214} textAnchor="middle" fontSize="12" fill={BLUE_TEXT}>
+                <text x={TRAY_BLUE.x} y={216} textAnchor="middle" fontSize="15" fill={BLUE_TEXT}>
                     Blue loses
                 </text>
             </g>
@@ -232,27 +232,28 @@ function CounterBagDrawing() {
                 <rect x={BAR.x} y={BAR.y} width={Math.max(0, barWidth)} height={BAR.h} rx={6} fill={RED} />
                 <line x1={BAR.x + BAR.w * 0.25} y1={BAR.y - 7} x2={BAR.x + BAR.w * 0.25} y2={BAR.y + BAR.h + 7}
                     stroke={INK_DARK} strokeWidth="2" strokeLinecap="round" />
-                <text x={360} y={334} textAnchor="middle" fontSize="13" fill={INK_DARK}
+                <text x={360} y={336} textAnchor="middle" fontSize="16" fill={INK_DARK}
                     style={{ fontVariantNumeric: "tabular-nums" }}>
                     {readout}
                 </text>
+                {/* the fraction sits in the open space under the tray, level with the bar */}
                 {total > 0 && (
                     <g style={{ fontVariantNumeric: "tabular-nums" }}>
-                        <text x={298} y={362} textAnchor="end" fontSize="12" fill={RED_TEXT}>
+                        <text x={92} y={309} textAnchor="end" fontSize="15" fill={RED_TEXT}>
                             n(A)
                         </text>
-                        <text x={298} y={390} textAnchor="end" fontSize="12" fill="#475569">
+                        <text x={92} y={337} textAnchor="end" fontSize="15" fill="#475569">
                             n(S)
                         </text>
-                        <text x={330} y={362} textAnchor="middle" fontSize="16" fill={RED_TEXT}>
+                        <text x={124} y={309} textAnchor="middle" fontSize="20" fill={RED_TEXT}>
                             {red}
                         </text>
-                        <line x1={310} y1={368} x2={350} y2={368} stroke={INK_DARK} strokeWidth="2"
+                        <line x1={104} y1={314} x2={144} y2={314} stroke={INK_DARK} strokeWidth="2"
                             strokeLinecap="round" />
-                        <text x={330} y={390} textAnchor="middle" fontSize="16" fill={INK_DARK}>
+                        <text x={124} y={337} textAnchor="middle" fontSize="20" fill={INK_DARK}>
                             {total}
                         </text>
-                        <text x={364} y={376} textAnchor="start" fontSize="15" fill={INK_DARK}>
+                        <text x={158} y={324} textAnchor="start" fontSize="19" fill={INK_DARK}>
                             {`= ${fmtPercent(share * 100)}`}
                         </text>
                     </g>
@@ -278,7 +279,7 @@ function CounterBagFigure() {
                 setVar("bagBlueCounters", 3);
                 setVar("countingHighlight", "");
             }}
-            caption="Drag counters from the tray into the bag, and click a counter in the bag to take it back out. The upright tick on the bar marks the target ratio of 1 in 4, and n(A) over n(S) underneath updates with every counter."
+            caption="Drag counters into the bag, or click one to take it out. The tick on the bar marks the target of 1 in 4."
         >
             <CounterBagDrawing />
             <InteractionHintSequence
