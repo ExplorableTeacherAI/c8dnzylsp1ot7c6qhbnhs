@@ -85,14 +85,14 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
     // SECTION — Counting Every Outcome (counter bag)
     // ========================================
     bagRedCounters: {
-        defaultValue: 1,
+        defaultValue: 0,
         type: 'number',
         label: 'Red counters in the bag',
         description: 'How many red (winning) counters the student has dropped into the bag',
         min: 0,
         max: 8,
         step: 1,
-        color: '#C4704E',
+        color: '#C93B32',
     },
     bagBlueCounters: {
         defaultValue: 3,
@@ -109,8 +109,22 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         type: 'linkedHighlight',
         label: 'Counter bag highlight',
         description: 'Active highlight for the counter bag figure (redCounters | allCounters)',
-        color: '#E08A72',
-        bgColor: 'rgba(224, 138, 114, 0.2)',
+        color: '#E0524A',
+        bgColor: 'rgba(224, 82, 74, 0.2)',
+    },
+    termRedCounter: {
+        defaultValue: '',
+        type: 'spotColor',
+        label: 'Red counter',
+        description: 'The red counters, the favourable outcomes, in the colour the figure draws them',
+        color: '#C93B32',
+    },
+    termBlueCounter: {
+        defaultValue: '',
+        type: 'spotColor',
+        label: 'Blue counter',
+        description: 'The blue counters, the rest of the sample space, in the colour the figure draws them',
+        color: '#2E9BD1',
     },
     answer_counting_percent: {
         defaultValue: '',
@@ -246,8 +260,8 @@ export const variableDefinitions: Record<string, VariableDefinition> = {
         placeholder: '?',
         options: ['1', '7', '8'],
         correctAnswer: '1',
-        color: '#C4704E',
-        bgColor: 'rgba(224, 138, 114, 0.18)',
+        color: '#C93B32',
+        bgColor: 'rgba(224, 82, 74, 0.18)',
     },
     answer_fair_wheel_denominator: {
         defaultValue: '',

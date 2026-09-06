@@ -8,8 +8,8 @@
     "counting-setup",
     "counting-rule",
     "counting-insight",
-    "counting-visual",
     "counting-question-percent",
+    "counting-visual",
     "counting-question-equivalent",
     "fifty-heading",
     "fifty-setup",
@@ -100,7 +100,8 @@
       "columns": [
         [
           "counting-rule",
-          "counting-insight"
+          "counting-insight",
+          "counting-question-percent"
         ],
         [
           "counting-visual"
@@ -111,18 +112,6 @@
         "gap": "lg",
         "reverse": false,
         "align": "start"
-      }
-    },
-    {
-      "id": "layout-counting-question-percent",
-      "type": "stack",
-      "columns": [
-        [
-          "counting-question-percent"
-        ]
-      ],
-      "props": {
-        "maxWidth": "xl"
       }
     },
     {

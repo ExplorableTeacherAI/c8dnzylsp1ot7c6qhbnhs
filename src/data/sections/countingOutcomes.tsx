@@ -7,13 +7,15 @@ import {
     InlineClozeInput,
     InlineFeedback,
     InlineLinkedHighlight,
+    InlineSpotColor,
     InlineTooltip,
     InteractionHintSequence,
+    TriggeredHintOverlay,
 } from "@/components/atoms";
 import { FormulaBlock, Figure } from "@/components/molecules";
 import { useVar, useSetVar } from "@/stores";
 import { clamp, useSpring } from "@/lib/motion";
-import { getVariableInfo, clozePropsFromDefinition, scrubVarsFromDefinitions } from "../variables";
+import { getVariableInfo, clozePropsFromDefinition, scrubVarsFromDefinitions, spotColorPropsFromDefinition } from "../variables";
 
 // ── Domain model ─────────────────────────────────────────────────────────────
 
@@ -22,12 +24,13 @@ const TARGET_TOTAL = 4; // the target chance: 1 red in every 4 counters
 const MAX_RED = 8;
 const MAX_BLUE = 16;
 
-const RED = "#E08A72";
-const RED_TEXT = "#C4704E";
+const RED = "#E0524A";
+const RED_TEXT = "#C93B32";
 const BLUE = "#62CCF9";
 const BLUE_TEXT = "#2E9BD1";
 const INK = "#64748B";
 const INK_DARK = "#334155";
+const SAMPLE = "#8B5CF6"; // the sample space: the bag, n(S), and the prose that names it
 const ACCENT = "#62D0AD";
 
 const fmtPercent = (v: number) => `${v.toFixed(1)}%`;
@@ -59,7 +62,7 @@ const insideBag = (x: number, y: number) =>
 
 function CounterBagDrawing() {
     const setVar = useSetVar();
-    const red = useVar<number>("bagRedCounters", 1);
+    const red = useVar<number>("bagRedCounters", 0);
     const blue = useVar<number>("bagBlueCounters", 3);
     const highlight = useVar<string>("countingHighlight", "");
     const svgRef = useRef<SVGSVGElement>(null);
@@ -112,7 +115,6 @@ function CounterBagDrawing() {
         else setVar("bagBlueCounters", clamp(blue - 1, 0, MAX_BLUE));
     };
 
-    const readout = total === 0 ? "The bag is empty" : `${red} red out of ${total} counters`;
 
     return (
         <svg
@@ -130,7 +132,7 @@ function CounterBagDrawing() {
             {/* Target, stated once at the top */}
             <g opacity={fade(false)} style={ease}>
                 <text x={360} y={44} textAnchor="middle" fontSize="16" fill={INK_DARK}>
-                    Target: 1 red in every 4 counters
+                    Target: 1 <tspan fill={RED_TEXT}>red</tspan> in every 4 counters
                 </text>
                 {onTarget && (
                     <text x={360} y={70} textAnchor="middle" fontSize="16" fill={ACCENT}
@@ -188,11 +190,11 @@ function CounterBagDrawing() {
             >
                 {bagLit && (
                     <rect x={BAG.x} y={BAG.y} width={BAG.w} height={BAG.h} rx={12} fill="none"
-                        stroke={INK} strokeWidth="9" opacity={0.22} />
+                        stroke={SAMPLE} strokeWidth="9" opacity={0.22} />
                 )}
                 <rect x={BAG.x} y={BAG.y} width={BAG.w} height={BAG.h} rx={12} fill="#FFFFFF"
-                    stroke={INK} strokeWidth={bagLit ? 3.5 : 2} style={{ transition: "stroke-width 150ms ease-out" }} />
-                <line x1={BAG.x} y1={BAG.y + 26} x2={BAG.x + BAG.w} y2={BAG.y + 26} stroke={INK}
+                    stroke={SAMPLE} strokeWidth={bagLit ? 3.5 : 2} style={{ transition: "stroke-width 150ms ease-out" }} />
+                <line x1={BAG.x} y1={BAG.y + 26} x2={BAG.x + BAG.w} y2={BAG.y + 26} stroke={SAMPLE}
                     strokeWidth="1.5" strokeLinecap="round" opacity={0.6} />
             </g>
 
@@ -234,7 +236,15 @@ function CounterBagDrawing() {
                     stroke={INK_DARK} strokeWidth="2" strokeLinecap="round" />
                 <text x={360} y={336} textAnchor="middle" fontSize="16" fill={INK_DARK}
                     style={{ fontVariantNumeric: "tabular-nums" }}>
-                    {readout}
+                    {total === 0 ? (
+                        "The bag is empty"
+                    ) : (
+                        <>
+                            {`${red} `}
+                            <tspan fill={RED_TEXT}>red</tspan>
+                            {` out of ${total} counters`}
+                        </>
+                    )}
                 </text>
                 {/* the fraction sits in the open space under the tray, level with the bar */}
                 {total > 0 && (
@@ -242,7 +252,7 @@ function CounterBagDrawing() {
                         <text x={92} y={309} textAnchor="end" fontSize="15" fill={RED_TEXT}>
                             n(A)
                         </text>
-                        <text x={92} y={337} textAnchor="end" fontSize="15" fill="#475569">
+                        <text x={92} y={337} textAnchor="end" fontSize="15" fill={SAMPLE}>
                             n(S)
                         </text>
                         <text x={124} y={309} textAnchor="middle" fontSize="20" fill={RED_TEXT}>
@@ -275,7 +285,9 @@ function CounterBagFigure() {
         <Figure
             id="counter-bag"
             onReset={() => {
-                setVar("bagRedCounters", 1);
+                // three blues and no red: one red short of the target, so the
+                // first drag the hint asks for is the one that reaches it
+                setVar("bagRedCounters", 0);
                 setVar("bagBlueCounters", 3);
                 setVar("countingHighlight", "");
             }}
@@ -293,6 +305,8 @@ function CounterBagFigure() {
                     },
                 ]}
             />
+            {/* listens for the equivalence question's "Discover it yourself" journey */}
+            <TriggeredHintOverlay hintKey="counting-bag-equivalent-hint" />
         </Figure>
     );
 }
@@ -310,7 +324,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
 
     <StackLayout key="layout-counting-setup" maxWidth="xl">
         <Block id="counting-setup" padding="sm">
-            <EditableParagraph id="para-counting-setup" blockId="counting-setup">Probability begins with counting, not with guessing. It needs the <InlineTooltip tooltip={"The sample space, written S, is the complete set of outcomes that could happen. Here it is every counter in the bag."} color={"#546E7A"} bgColor={"rgba(84, 110, 122, 0.15)"} position={"auto"} maxWidth={400} id={"tooltip-counting-sample-space"}>sample space</InlineTooltip>, every outcome that could happen, and the <InlineTooltip tooltip={"A favourable outcome is one that counts as a success for the event being measured, here drawing a red counter."} color={"#C4704E"} bgColor={"rgba(245, 158, 11, 0.15)"} position={"auto"} maxWidth={400} id={"tooltip-counting-favourable"}>favourable outcomes</InlineTooltip> inside it. Drag red and blue counters from the tray into the bag until the reds make up exactly one in four, and watch the ratio move with every counter you add.</EditableParagraph>
+            <EditableParagraph id="para-counting-setup" blockId="counting-setup">Probability begins with counting, not with guessing. It needs the <InlineTooltip tooltip={"The sample space, written S, is the complete set of outcomes that could happen. Here it is every counter in the bag."} color={"#8B5CF6"} bgColor={"rgba(139, 92, 246, 0.15)"} position={"auto"} maxWidth={400} id={"tooltip-counting-sample-space"}>sample space</InlineTooltip>, every outcome that could happen, and the <InlineTooltip tooltip={"A favourable outcome is one that counts as a success for the event being measured, here drawing a red counter."} color={"#C93B32"} bgColor={"rgba(224, 82, 74, 0.15)"} position={"auto"} maxWidth={400} id={"tooltip-counting-favourable"}>favourable outcomes</InlineTooltip> inside it. Drag <InlineSpotColor id="spot-counting-red" varName="termRedCounter" {...spotColorPropsFromDefinition(getVariableInfo('termRedCounter'))}>red</InlineSpotColor> and <InlineSpotColor id="spot-counting-blue" varName="termBlueCounter" {...spotColorPropsFromDefinition(getVariableInfo('termBlueCounter'))}>blue</InlineSpotColor> counters from the tray into the bag until the <InlineSpotColor id="spot-counting-reds" varName="termRedCounter" {...spotColorPropsFromDefinition(getVariableInfo('termRedCounter'))}>reds</InlineSpotColor> make up exactly one in four, and watch the ratio move with every counter you add.</EditableParagraph>
         </Block>
     </StackLayout>,
 
@@ -323,7 +337,7 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-rule" maxWidth="xl">
         <Block id="counting-rule" padding="lg">
             <FormulaBlock
-                latex="P(A) = \frac{\textcolor{#C4704E}{n(A)}}{\textcolor{#475569}{n(S)}} = \frac{\scrub{bagRedCounters}}{\scrub{bagRedCounters} + \scrub{bagBlueCounters}}"
+                latex="P(A) = \frac{\textcolor{#C93B32}{n(A)}}{\textcolor{#8B5CF6}{n(S)}} = \frac{\scrub{bagRedCounters}}{\scrub{bagRedCounters} + \scrub{bagBlueCounters}}"
                 variables={scrubVarsFromDefinitions(["bagRedCounters", "bagBlueCounters"])}
             />
         </Block>
@@ -332,27 +346,35 @@ export const countingOutcomesBlocks: ReactElement[] = [
     <StackLayout key="layout-counting-insight" maxWidth="xl">
         <Block id="counting-insight" padding="sm">
             <EditableParagraph id="para-counting-insight" blockId="counting-insight">
-                The probability of drawing red is a ratio: the{" "}
+                Probability is a ratio: the{" "}
                 <InlineLinkedHighlight
                     id="link-counting-red"
                     varName="countingHighlight"
                     highlightId="redCounters"
-                    color="#C4704E"
-                    bgColor="rgba(224, 138, 114, 0.2)"
+                    color="#C93B32"
+                    bgColor="rgba(224, 82, 74, 0.2)"
                 >
                     favourable outcomes
                 </InlineLinkedHighlight>
-                {" "}n(A) on top, and the{" "}
+                {" "}n(A) over the{" "}
                 <InlineLinkedHighlight
                     id="link-counting-all"
                     varName="countingHighlight"
                     highlightId="allCounters"
-                    color="#64748B"
-                    bgColor="rgba(100, 116, 139, 0.2)"
+                    color="#8B5CF6"
+                    bgColor="rgba(139, 92, 246, 0.2)"
                 >
                     whole sample space
                 </InlineLinkedHighlight>
-                {" "}n(S) underneath. That is why 1 red out of 4 and 4 reds out of 16 give the same probability: the ratio is what counts, not the size of the sample space. So back at that eight-slice fair wheel with its single winning slice, the fraction fills in like this.
+                {" "}n(S). That is why 1{" "}
+                <InlineSpotColor id="spot-counting-red-in-four" varName="termRedCounter" {...spotColorPropsFromDefinition(getVariableInfo('termRedCounter'))}>
+                    red
+                </InlineSpotColor>
+                {" "}in 4 and 4{" "}
+                <InlineSpotColor id="spot-counting-reds-in-sixteen" varName="termRedCounter" {...spotColorPropsFromDefinition(getVariableInfo('termRedCounter'))}>
+                    reds
+                </InlineSpotColor>
+                {" "}in 16 give the same answer. So for the eight-slice wheel with one winning slice, the fraction fills in like this.
             </EditableParagraph>
         </Block>
     </StackLayout>,
@@ -366,15 +388,15 @@ export const countingOutcomesBlocks: ReactElement[] = [
                         correctAnswer: "1",
                         options: ["1", "7", "8"],
                         placeholder: "?",
-                        color: "#C4704E",
-                        bgColor: "rgba(224, 138, 114, 0.18)",
+                        color: "#C93B32",
+                        bgColor: "rgba(224, 82, 74, 0.18)",
                     },
                     answer_fair_wheel_denominator: {
                         correctAnswer: "8",
                         options: ["1", "7", "8"],
                         placeholder: "?",
-                        color: "#475569",
-                        bgColor: "rgba(100, 116, 139, 0.18)",
+                        color: "#8B5CF6",
+                        bgColor: "rgba(139, 92, 246, 0.18)",
                     },
                 }}
             />
